@@ -104,6 +104,7 @@ public class Test {
 					isCreate);
 
 			if (null != event) {
+				System.out.println("going to insert:"+event.getStart()+":summary:"+event.getSummary());
 				service.events().insert("primary", event);
 			}
 		} catch (Exception e) {
@@ -147,7 +148,8 @@ public class Test {
 				if (desc.equals(event.getDescription())) {
 					isEventNeeded = false;
 					if (!isCreate) {
-						service.events().delete("primary", event.getId());
+						System.out.println("going to delete:"+event.getStart()+":summary:"+event.getSummary());
+//						service.events().delete("primary", event.getId());
 					}
 				}
 			}
