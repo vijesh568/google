@@ -1,0 +1,8 @@
+<bikeservice>
+<credentials username="vijesh568" password="hsejivunevisxle" action="create" />
+<time hours ="10" minutes="00" />
+
+<date value = "20150302" />
+<train JAN-14-tom = "-1" />
+
+</bikeservice>

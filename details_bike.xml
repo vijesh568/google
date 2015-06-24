@@ -1,0 +1,7 @@
+<bikeservice>
+<credentials username="vijesh124" password="gthapal568*" action="create" />
+<time hours ="10" minutes="00" />
+<date value = "20121120" />
+<service seventeen-service-5-days-before="1145" />
+
+</bikeservice>

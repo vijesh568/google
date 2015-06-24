@@ -1,0 +1,31 @@
+<bikeservice>
+<credentials username="vijesh124" password="gthapal568*" action="delete" />
+<time hours ="10" minutes="00" />
+
+<date value = "20150114" />
+<train JAN-14-tom = "-61" />
+<date value = "20150126" />
+<train JAN-26-tom="-61" />
+<date value = "20150306" />
+<train MAR-6-tom="-61" />
+<date value = "20150403" />
+<train APR-3-tom="-61" />
+<date value = "20150501" />
+<train MAY-1-tom="-61" />
+<date value = "20150917" />
+<train SEP-17-tom="-61" />
+<date value = "20150925" />
+<train SEP-25-tom="-61" />
+<date value = "20151002" />
+<train OCT-2-tom="-61" />
+<date value = "20151022" />
+<train OCT-22-tom="-61" />
+<date value = "20151111" />
+<train NOV-11-tom="-61" />
+<date value = "20151225" />
+<train DEC-25-tom="-61" />
+<date value = "20150415" />
+<train APR-14-tom="-61" />
+<date value = "20150827" />
+<train ONAM-AUG-tom="-61" />
+</bikeservice>
