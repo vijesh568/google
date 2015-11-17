@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -21,6 +22,7 @@ import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.CalendarScopes;
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.EventDateTime;
+import com.google.api.services.calendar.model.EventReminder;
 import com.google.api.services.calendar.model.Events;
 
 public class Test {
@@ -30,7 +32,7 @@ public class Test {
 	/** Directory to store user credentials. */
 	private static final java.io.File DATA_STORE_DIR = new java.io.File(
 			System.getProperty("user.home"),
-			".credentials/calendar-api-quickstart");
+			".credentials/calendar-java-quickstart");
 
 	/** Global instance of the {@link FileDataStoreFactory}. */
 	private static FileDataStoreFactory DATA_STORE_FACTORY;
@@ -104,10 +106,11 @@ public class Test {
 					isCreate);
 
 			if (null != event) {
-				System.out.println("going to insert:"+event.getStart()+":summary:"+event.getSummary());
-				service.events().insert("primary", event);
+				System.out.println("going to insert event:"+event);
+				service.events().insert("primary", event).execute();
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			System.out
 					.println("Exception while creating the event :description:"
 							+ description + ":date:" + date);
@@ -118,50 +121,59 @@ public class Test {
 	private static Event createCalendarEntryEvent(Date date, String desc,
 			Calendar service, boolean isCreate) {
 
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
 		Event myEvent = new Event();
 		// Set the title and description
 		myEvent.setSummary(desc);
 		myEvent.setDescription("I am throwing a Pi Day Party!");
 
-		DateTime startTime = new DateTime(date, TimeZone.getTimeZone("IST"));
-		System.out.println("start date:" + startTime);
-		DateTime endTime = new DateTime(date, TimeZone.getTimeZone("IST"));
-		System.out.println("endTime:" + endTime);
 
 		Events events;
 		try {
+			Date startTime = format.parse(format.format(date));
+			
 			events = service
 					.events()
 					.list("primary")
 					.setTimeMin(
-							new DateTime(new Date(startTime.getValue() - 10),
+							new DateTime(new Date(startTime.getTime()),
 									TimeZone.getTimeZone("IST")))
 					.setTimeMax(
-							new DateTime(new Date(startTime.getValue() + 1000),
+							new DateTime(new Date(startTime.getTime() + 1000),
 									TimeZone.getTimeZone("IST"))).execute();
 
 			List<Event> items = events.getItems();
+			System.out.println("items:"+items.size());
 
 			boolean isEventNeeded = true;
 
 			for (Event event : items) {
-				if (desc.equals(event.getDescription())) {
+				if (desc.equals(event.getSummary())) {
 					isEventNeeded = false;
+					System.out.println("Event already present");
 					if (!isCreate) {
 						System.out.println("going to delete:"+event.getStart()+":summary:"+event.getSummary());
-//						service.events().delete("primary", event.getId());
+						service.events().delete("primary", event.getId()).execute();
 					}
 				}
 			}
-			if (!isEventNeeded) {
+			if (!isEventNeeded || !isCreate) {
 				return null;
 			}
+			String dateStr = format.format(date);
 
-			myEvent.setStart(new EventDateTime().setDateTime(startTime));
-			myEvent.setEnd(new EventDateTime().setDateTime(endTime));
+			myEvent.setStart(new EventDateTime().setDate(new DateTime(dateStr)));
+			myEvent.setEnd(new EventDateTime().setDate(new DateTime(dateStr)));
 
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+
+			EventReminder[] reminderOverrides = new EventReminder[] {
+					new EventReminder().setMethod("popup").setMinutes(date.getHours() * 60), };
+			Event.Reminders reminders = new Event.Reminders().setUseDefault(false)
+					.setOverrides(Arrays.asList(reminderOverrides));
+			myEvent.setReminders(reminders);
+
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return myEvent;

@@ -29,7 +29,7 @@ public class CalendarQuickstart {
 
     /** Directory to store user credentials. */
     private static final java.io.File DATA_STORE_DIR = new java.io.File(
-        System.getProperty("user.home"), ".credentials/calendar-api-quickstart");
+        System.getProperty("user.home"), ".credentials/calendar-java-quickstart");
 
     /** Global instance of the {@link FileDataStoreFactory}. */
     private static FileDataStoreFactory DATA_STORE_FACTORY;
@@ -43,7 +43,7 @@ public class CalendarQuickstart {
 
     /** Global instance of the scopes required by this quickstart. */
     private static final List<String> SCOPES =
-        Arrays.asList(CalendarScopes.CALENDAR_READONLY);
+        Arrays.asList(CalendarScopes.CALENDAR);
 
     static {
         try {
@@ -103,32 +103,45 @@ public class CalendarQuickstart {
             getCalendarService();
 
         // List the next 10 events from the primary calendar.
-        DateTime now = new DateTime(System.currentTimeMillis());
-        Events events = service.events().list("primary")
-            .setMaxResults(10)
-            .setTimeMin(now)
-            .setOrderBy("startTime")
-            .setSingleEvents(true)
-            .execute();
-        List<Event> items = events.getItems();
-        if (items.size() == 0) {
-            System.out.println("No upcoming events found.");
-        } else {
-            System.out.println("Upcoming events");
-            for (Event event : items) {
-                DateTime start = event.getStart().getDateTime();
-                if (start == null) {
-                    start = event.getStart().getDate();
-                }
-                System.out.printf("%s (%s)\n", event.getSummary(), start);
-            }
-        }
-        DateTime time = new DateTime(new Date());
+//        DateTime now = new DateTime(System.currentTimeMillis());
+//        Events events = service.events().list("primary")
+//            .setMaxResults(10)
+//            .setTimeMin(now)
+//            .setOrderBy("startTime")
+//            .setSingleEvents(true)
+//            .execute();
+//        List<Event> items = events.getItems();
+//        if (items.size() == 0) {
+//            System.out.println("No upcoming events found.");
+//        } else {
+//            System.out.println("Upcoming events");
+//            for (Event event : items) {
+//                DateTime start = event.getStart().getDateTime();
+//                if (start == null) {
+//                    start = event.getStart().getDate();
+//                }
+//                System.out.printf("%s (%s)\n", event.getSummary(), start);
+//            }
+//        }
+        System.out.println("date:"+new Date());
+//        DateTime time = new DateTime(new Date());
+        DateTime time = new DateTime("2015-06-25T20:38:15.189+05:30");
         EventDateTime dateTime = new EventDateTime();
         dateTime.setDateTime(time);
-        dateTime.setDate(time);
-        service.events().insert("primary", new Event().setStart(dateTime).setEnd(dateTime)).execute();
-        System.out.println("date:"+new Date());
+//        dateTime.setDate(time);
+//        service.events().insert("primary", new Event().setStart(dateTime).setEnd(dateTime).setSummary("hello")).execute();
+		Events evnts = service.events().list("primary")
+				.setTimeMin(new DateTime("2014-12-30T20:38:15.189+05:30"))
+				.setTimeMax(new DateTime("2016-01-01T20:38:15.189+05:30")).execute();
+		List<Event> list = evnts.getItems();
+		
+		for (Event event : list) {
+			if (event.getSummary().contains("tom")) {
+				System.out.println("going to delete:"+event);
+				service.events().delete("primary", event.getId()).execute();
+			}
+					
+		}
     }
 
 }

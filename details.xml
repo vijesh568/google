@@ -1,9 +1,39 @@
 <bikeservice>
-<credentials username="vijesh568" password="****" action="create" />
-<time hours ="10" minutes="00" />
-<reference date ="20150625" day="4" />
+<credentials username="vijesh124" password="" action="create" />
+<!-- hours before alarm should trigger -->
+<time hours ="04" minutes="00" />
+<!-- 0=monday 7=sunday -->
+<reference date ="20140101" day="2" />
 
-<date value = "20150626" />
-<service JAN-14-tom = "-1" />
+<date value = "20160324" />
+<train MAR-24-25-="-120" />
+
+<date value = "20160408" />
+<train APR-08-="-120" />
+
+<date value = "20160414" />
+<train APR-14-VISHU-="-120" />
+
+<date value = "20160914" />
+<train SEP-14-ONAM-="-120" />
+
+<date value = "20160706" />
+<train JULY-06-="-120" />
+
+<date value = "20160815" />
+<train AUG-15-="-120" />
+
+<date value = "20160905" />
+<train SEP-05-="-120" />
+
+<date value = "20160912" />
+<train SEP-12-="-120" />
+
+<date value = "20161010" />
+<train OCT-10-="-120" />
+
+<date value = "20161101" />
+<train NOV-01-="-120" />
+
 
 </bikeservice>
